@@ -72,7 +72,7 @@ const CartPage = () => {
             Checkout
           </button>
           <a
-            href="/"
+            href="/products"
             className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded"
           >
             Continue Shopping
