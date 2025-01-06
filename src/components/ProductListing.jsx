@@ -1,5 +1,5 @@
 // src/components/ProductListing.js
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addItem } from "../redux/cartSlice";
 
@@ -50,6 +50,15 @@ const products = [
 
 const ProductListing = () => {
   const dispatch = useDispatch();
+  const [disabledButtons, setDisabledButtons] = useState([]);
+
+  const handleAddToCart = (product) => {
+    // Dispatch the action to add the item to the cart
+    dispatch(addItem(product));
+
+    // Disable the button after it's clicked
+    setDisabledButtons((prev) => [...prev, product.id]);
+  };
 
   return (
     <div className="container mx-auto p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -66,10 +75,17 @@ const ProductListing = () => {
           <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
           <p className="text-gray-600 mb-4">${product.price}</p>
           <button
-            onClick={() => dispatch(addItem(product))}
-            className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded"
+            onClick={() => handleAddToCart(product)}
+            disabled={disabledButtons.includes(product.id)}
+            className={`${
+              disabledButtons.includes(product.id)
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-green-500 hover:bg-green-600"
+            } text-white py-2 px-4 rounded`}
           >
-            Add to Cart
+            {disabledButtons.includes(product.id)
+              ? "Added to Cart"
+              : "Add to Cart"}
           </button>
         </div>
       ))}
